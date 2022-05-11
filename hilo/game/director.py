@@ -1,4 +1,5 @@
 from game.cards import Card
+import random
 
 
 class Director:
@@ -7,10 +8,9 @@ class Director:
     The responsibility of a Director is to control the sequence of play.
 
     Attributes:
-        initial_points: Initial points is automatically set at 300.
-        show_card (boolean): Whether or not the player wants to show the card.
-        points (int): The points for one round of play.
-        total_points (int): The score for the entire game.
+        card (List[Card]): A list of Card instances.
+        is_playing (boolean): Whether or not the game is being played.
+        score (int): The score for one round of play. Inital score is 300
     """
 
     def __init__(self):
@@ -19,11 +19,13 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        
-        self.initial_points = 300
-        self.show_card = True
-        self.points = 0
-        self.total_points = 0
+        self.card = []
+        self.is_playing = True
+        self.score = 300
+
+        for i in range(1):
+            card = Card()
+            self.card.append(card)
 
     def start_game(self):
         """Starts the game by running the main game loop.
@@ -31,52 +33,44 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
+        while self.is_playing:
+            self.play_card()
+            self.do_outputs()
+            self.get_inputs()
 
-        while self.show_card:
-            self.show_card_value()
-            self.player_input()
-            self.update_points()
-            self.show_score()
-
-    def show_card_value(self):
-        """Ask the user if they want to show card.
-
-        Args:
-            self (Director): An instance of Director.
-        """
-
-        user_input = ('Do you want to show card? [y/n] ')
-        self.show_card = (user_input == 'y')
-
-    def player_input(self):
-        """Shows the card and run the show_card method from Card class
+       
+    def play_card(self):
+        """Show both cards. Lets the player guess and Updates the player's score.
 
         Args:
             self (Director): An instance of Director.
         """
-        self.card = Card()
-        self.card.show_card()
+        if not self.is_playing:
+            return 
 
-    def update_points(self):
-        """Updates the player's score.
+        for i in range(len(self.card)):
+            card = self.card[i]
+            card.card()
+        self.score += card.points 
 
-        Args:
-            self (Director): An instance of Director.
-        """
-
-        self.card = Card()
-        if self.card.player_guess == True:
-            self.initial_points + self.card.points
-    
-        else:
-            self.initial_points - self.card.points
-
-    def show_score(self):
+    def do_outputs(self):
         """Displays the score. 
 
         Args:
             self (Director): An instance of Director.
         """
+        if not self.is_playing:
+            return
 
-        self.total_points += self.card.points
-        print(f'You\'re score is {self.total_points}')
+        print(f"Your score is: {self.score}\n")
+        self.is_playing == (self.score > 0)
+    
+    def get_inputs(self):
+        """Ask the user if they want to play again.
+
+        Args:
+            self (Director): An instance of Director.
+        """
+
+        play_again = input("Play again? [y/n] ")
+        self.is_playing = (play_again == "y")

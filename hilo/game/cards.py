@@ -1,64 +1,56 @@
 import random
 
+
+# TODO: Implement the Card class as follows...
+
 # 1) Add the class declaration. Use the following class comment.
 class Card:
-    """Not a graphical card. Will only show its value from 1-13
-    The responsibility of Card is to show first and second card value,
-    check if player guessed correctly and calculate the points for 
+    """A card that has values from 1-13. Two cards will show. User has to guess if the second card is 
+    higher or lower than the first card before the second card is shown.
+    The responsibility of Card is to keep track of cards values, compare if player
+    guessed it right and calculate the points for 
     it.
    
     Attributes:
-        value (int): The value of the first card.
-        points (int): The number of points the die is worth.
-        second_value (int): The value of the second card.
-        player_guess (boolean): Whether player guess if the second card value is high or low.
-        player_input (str): To ask if player's guess if high or low.
+        value (int): The number of first card.
+        player_guess (str): Player guess if the second card will be Higher or Lower
+        points (int): The number of points player will get for guessing right.
+        second_value (int): The value of the second card
     """
 
-    # 2) Create the class constructor. Use the following method comment.
+# 2) Create the class constructor. Use the following method comment.
     def __init__(self):
         """Constructs a new instance of Card with a value and points attribute.
 
         Args:
             self (Card): An instance of Card.
         """
-        self.value = 0
-        self.second_value = 0 + 1
         self.points = 0
-        self.player_guess = True
-        self.player_input = ""
+        self.player_guess = ""
+        self.second_value = 0
+        self.value = 0
 
-    # 3) Create the show_card(self) method. Use the following method comment.
-    def show_card(self):
-        """Generates a new random value and checks if player guessed correctly.
+# 3) Create the roll(self) method. Use the following method comment.
+    def card(self):
+        """Generates a new random value and calculates the points.
         
         Args:
             self (Card): An instance of Card.
         """
-        self.value = random.randint(1,14)
+        self.value = random.randint(1,13)
+        print(f'The card is: {self.value}')
 
-        self.hi_or_lo = input('High or Low? [h/l] ')
+        self.player_guess = input("Higher or Lower? [h/l] ")
 
-        self.player_input == (self.hi_or_lo == 'h' or 'l')
+        self.second_value = random.randint(1,13)
 
-        self.second_value = random.randint(1,14)
+        if self.value == self.second_value:
+            self.second_value + random.randint(1,10)
+        print(f'The second card is: {self.second_value}')
 
-        if self.second_value > self.value and self.player_input == 'h':
-            self.player_guess = True
-        elif self.second_value < self.value and self.player_input == 'l':
-            self.player_guess = True
-        else:
-            self.player_guess = False
-
-    # 3) Create the compute_points(self) method. Use the following method comment.
-    def compute_points(self):
-        """Computes the points.
-        
-        Args:
-            self (Card): An instance of Card.
-        """
-
-        if self.player_guess:
+        if (self.second_value > self.value) and (self.player_guess == 'h'):
             self.points = 100
-        else: 
-            self.points = 75
+        elif (self.second_value < self.value) and (self.player_guess == 'l'):
+            self.points = 100
+        else:
+            self.points = -75
