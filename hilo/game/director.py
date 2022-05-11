@@ -33,10 +33,17 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        while self.is_playing:
+        # While is_playing is true, execute these functions
+        while self.is_playing:           
             self.play_card()
             self.do_outputs()
-            self.get_inputs()
+            # To make sure the game will stop if player reached 0 points
+            if self.score <= 0:
+                print(f'Game is over!')
+                return
+            else:
+                # If the player has more than 0 points then execute this
+                self.get_inputs()
 
        
     def play_card(self):
@@ -53,6 +60,7 @@ class Director:
             card.card()
         self.score += card.points 
 
+
     def do_outputs(self):
         """Displays the score. 
 
@@ -62,8 +70,12 @@ class Director:
         if not self.is_playing:
             return
 
-        print(f"Your score is: {self.score}\n")
-        self.is_playing == (self.score > 0)
+        # This line prevents the player from having negative score
+        if self.score < 0:
+            print(f'Your score is: 0')
+        else:
+            print(f"Your score is: {self.score}\n")
+            self.is_playing == (self.score > 0)
     
     def get_inputs(self):
         """Ask the user if they want to play again.
@@ -71,6 +83,5 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-
         play_again = input("Play again? [y/n] ")
         self.is_playing = (play_again == "y")

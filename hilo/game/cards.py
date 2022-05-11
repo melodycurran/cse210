@@ -30,27 +30,48 @@ class Card:
         self.second_value = 0
         self.value = 0
 
-# 3) Create the roll(self) method. Use the following method comment.
+# 3) Create the card(self) method. Use the following method comment.
     def card(self):
-        """Generates a new random value and calculates the points.
+        """Generates a new random card values and calculates the points.
         
         Args:
             self (Card): An instance of Card.
         """
+        
+        # Using random to generate random number for the first card
         self.value = random.randint(1,13)
         print(f'The card is: {self.value}')
 
+        # Player guess if the second card will be higher or lower
         self.player_guess = input("Higher or Lower? [h/l] ")
 
+        # Using random to generate random number for the second card
         self.second_value = random.randint(1,13)
 
-        if self.value == self.second_value:
-            self.second_value + random.randint(1,10)
-        print(f'The second card is: {self.second_value}')
+        # If the first and second card values are the same then
+        if self.second_value == self.value:
+            # the computer will generate another random number and
+            another_randint = random.randint(1,10)
+            # that will be added to the second card value
+            self.second_value += another_randint
+            # But if the sum of the two numbers are more than 13 then,
+            if self.second_value > 13:
+                # The sum will be divided by that random number. If the quotient
+                # has decimals then we will only get the rounded whole number
+                self.second_value /= another_randint
+        print(f'The second card is: {self.second_value:.0f}')
+        
+        
 
+        # If block to determine if the player guessed it right and the corresponding
+        # points earned
         if (self.second_value > self.value) and (self.player_guess == 'h'):
             self.points = 100
         elif (self.second_value < self.value) and (self.player_guess == 'l'):
             self.points = 100
         else:
             self.points = -75
+            
+            
+    
+    
